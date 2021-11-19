@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cook_Book.NoActionBar">
         <activity
+            android:name=".RecipeListActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoadingActivity"
             android:exported="true">
             <intent-filter>
