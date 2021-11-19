@@ -1,4 +1,24 @@
 <resources>
     <string name="app_name">Cook_Book</string>
     <string name="loading">Loading</string>
+
+    <!-- Default Strings -->
+    <string name="recipe_title">Recipe Title</string>
+    <string name="description">Description</string>
+
+    <!-- Image Names -->
+    <string name="default_recipe_image">def_recipe_image</string>
+    <string name="def_chicken_img_1">def_chicken_img_1</string>
+    <string name="def_chicken_img_2">def_chicken_img_2</string>
+    <string name="def_dessert_img_1">def_dessert_img_1</string>
+    <string name="def_dessert_img_2">def_dessert_img_2</string>
+    <string name="def_salad_img_1">def_salad_img_1</string>
+    <string name="def_salad_img_2">def_salad_img_2</string>
+    <string name="def_soup_img_1">def_soup_img_1</string>
+    <string name="def_soup_img_2">def_soup_img_2</string>
+    <string name="default_recipe_image_desc">Default Recipe Image. Add Image.</string>
+
+    <!-- Shape Settings -->
+    <string name="recipe_card_rounding">10dp</string>
+    <string name="recipe_card__desc_rounding">10dp</string>
 </resources>
