@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -50,21 +51,25 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
         }
 
         override fun onClick(p0: View?) {
-            if(recipe!!.flipped)
-                flipView(context, backSide, frontSide, recipe!!.flipped)
-            else
-                flipView(context, frontSide, backSide, recipe!!.flipped)
+            flipView()
             recipe!!.flipped = !recipe!!.flipped
         }
-    }
-}
 
-fun flipView(context: Context, front: View, back: View, showFront: Boolean){
-    var animation = AnimatorSet()
-    var leftIn = AnimatorInflater.loadAnimator(context, R.animator.card_flip_left_in)
-    var rightOut = AnimatorInflater.loadAnimator(context, R.animator.card_flip_right_out)
-    leftIn.setTarget(back)
-    rightOut.setTarget(front)
-    animation.playTogether(leftIn, rightOut)
-    animation.start()
+        private fun flipView(){
+            var animation = AnimatorSet()
+            var back = AnimatorInflater.loadAnimator(context, R.animator.card_flip_back_animtion)
+            var front = AnimatorInflater.loadAnimator(context, R.animator.card_flip_front_animation)
+
+            if(recipe!!.flipped) {
+                back.setTarget(frontSide)
+                front.setTarget(backSide)
+            } else {
+                back.setTarget(backSide)
+                front.setTarget(frontSide)
+            }
+
+            animation.playTogether(back, front)
+            animation.start()
+        }
+    }
 }

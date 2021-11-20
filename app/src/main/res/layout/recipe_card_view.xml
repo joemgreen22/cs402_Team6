@@ -157,7 +157,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/default_recipe_image_desc"
-                        android:gravity="center"
+                        android:scaleType="centerCrop"
                         app:srcCompat="@drawable/def_recipe_image" />
                 </androidx.cardview.widget.CardView>
 

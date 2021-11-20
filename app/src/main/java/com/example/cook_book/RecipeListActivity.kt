@@ -56,7 +56,7 @@ class RecipeListActivity : AppCompatActivity() {
         recipeList.add(
             Recipe("Shakshuka",
             "Shakshuka is an easy, healthy breakfast (or any time of day) recipe in Israel and other parts of the Middle East and North Africa. It’s a simple combination of simmering tomatoes, onions, garlic, spices and gently poached eggs. It’s nourishing, filling and one recipe I guarantee you’ll make time and again.",
-            BitmapFactory.decodeResource(resources, R.drawable.def_soup_img_1))
+            BitmapFactory.decodeResource(resources, R.drawable.def_soup_img_2))
         )
 
         kRecyclerView = findViewById<RecyclerView>(R.id.recipe_recycler_view)
