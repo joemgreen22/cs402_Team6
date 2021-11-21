@@ -8,7 +8,8 @@ public data class Recipe(
     var image: Bitmap,
     var ingredients: MutableList<String> = mutableListOf(),
     var instructions: MutableList<String> = mutableListOf(),
-    var flipped: Boolean = false
+    var flipped: Boolean = false,
+    var ingredientsSelect: Boolean = true
 )
 
 class RecipeModel : ArrayList<Recipe>() {

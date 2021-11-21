@@ -5,6 +5,8 @@
     <!-- Default Strings -->
     <string name="recipe_title">Recipe Title</string>
     <string name="description">Description</string>
+    <string name="direction_entry">Direction Here</string>
+    <string name="direction_count">0)</string>
 
     <!-- Image Names -->
     <string name="default_recipe_image">def_recipe_image</string>
@@ -21,4 +23,6 @@
     <!-- Shape Settings -->
     <string name="recipe_card_rounding">10dp</string>
     <string name="recipe_card__desc_rounding">10dp</string>
+    <string name="direction_label">Directions</string>
+    <string name="ingredient_label">Ingredients</string>
 </resources>

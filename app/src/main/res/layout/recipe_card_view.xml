@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -15,7 +16,7 @@
         android:paddingVertical="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:alpha="0">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,60 +29,161 @@
             android:background="@drawable/recipe_card_background"
             android:padding="5dp">
 
-            <TextView
-                android:id="@+id/back_recipe_name"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".23"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="center_vertical"
-                android:text="Back View Things Changed"
-                android:textAllCaps="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="24sp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight=".77"
-                android:orientation="horizontal" >
+                android:layout_weight=".23"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@drawable/recipe_card_background"
+                android:baselineAligned="false">
 
-                <TextView
-                    android:id="@+id/back_recipe_description"
+
+                <LinearLayout
+                    android:id="@+id/ingredients"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight=".69"
-                    android:fontFamily="@font/roboto"
-                    android:gravity="center_vertical"
-                    android:text="@string/description"
-                    android:textColor="#FF000000"
-                    android:textSize="12sp"
-                    android:padding="5dp"
-                    android:background="@drawable/recipe_card_description_background"/>
+                    android:layout_weight=".5"
+                    android:orientation="vertical">
 
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".02" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".8">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".29"
-                    app:cardBackgroundColor="#88FFFFFF"
-                    app:cardCornerRadius="@dimen/recipe_card_content_round_radius"
-                    app:cardElevation="0dp">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/ingredient_image"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintDimensionRatio="1:1"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/Ingredients" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="match_parent" />
+
+                            <TextView
+                                android:id="@+id/ingredient_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/roboto_medium"
+                                android:gravity="center_vertical"
+                                android:text="@string/ingredient_label"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".1"/>
 
                     <ImageView
-                        android:id="@+id/back_recipe_image"
+                        android:id="@+id/ingredient_underline"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/default_recipe_image_desc"
-                        android:gravity="center"
-                        app:srcCompat="@drawable/def_recipe_image" />
-                </androidx.cardview.widget.CardView>
+                        android:layout_height="0dp"
+                        android:layout_weight=".1"
+                        android:background="@drawable/rounded_bar"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/directions"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".8">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/direction_image"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintDimensionRatio="1:1"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/Instructions" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="match_parent" />
+
+                            <TextView
+                                android:id="@+id/direction_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/roboto_medium"
+                                android:gravity="center_vertical"
+                                android:text="@string/direction_label"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".1"/>
+
+                    <ImageView
+                        android:id="@+id/direction_underline"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".1"
+                        android:background="@drawable/rounded_bar"
+                        android:alpha="0"/>
+
+                </LinearLayout>
 
             </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".77"
+                android:paddingHorizontal="10dp"/>
 
         </LinearLayout>
 
@@ -95,7 +197,8 @@
         android:paddingHorizontal="10dp"
         android:paddingVertical="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:alpha="0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -164,6 +267,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cook_book.recipe.RecipeDirectionAdaptor
+import com.example.cook_book.recipe.RecipeIngredientsAdaptor
 
 class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerView.Adapter<RecipeAdapter.RecipeCard>() {
 
@@ -33,12 +35,30 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
         private val frontSide = view.findViewById<ConstraintLayout>(R.id.front_side)
         private val backSide = view.findViewById<ConstraintLayout>(R.id.back_side)
 
+        // Front Components
         private val frontTxt = view.findViewById<TextView>(R.id.front_recipe_name)
         private val frontDesc = view.findViewById<TextView>(R.id.front_recipe_description)
         private val frontImg = view.findViewById<ImageView>(R.id.front_recipe_image)
 
+        // Back Components
+        private val recycler = view.findViewById<RecyclerView>(R.id.recipe_recycler_view)
+        private val ingredientView = view.findViewById<LinearLayout>(R.id.ingredients)
+        private val ingredientsBar = view.findViewById<ImageView>(R.id.ingredient_underline)
+        private val directionView = view.findViewById<LinearLayout>(R.id.directions)
+        private val directionBar = view.findViewById<ImageView>(R.id.direction_underline)
+
         init{
             view.setOnClickListener(this)
+
+            ingredientView.setOnClickListener {
+                recipe!!.ingredientsSelect = !recipe!!.ingredientsSelect
+                setupTab()
+            }
+
+            directionView.setOnClickListener {
+                recipe!!.ingredientsSelect = !recipe!!.ingredientsSelect
+                setupTab()
+            }
         }
 
         fun setup(){
@@ -46,13 +66,17 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
                 frontTxt.text = it.recipeName
                 frontDesc.text = it.recipeDescription
                 frontImg.setImageBitmap(it.image)
-                //TODO: do backside as well
+                setupTab()
             }
         }
 
         override fun onClick(p0: View?) {
             flipView()
             recipe!!.flipped = !recipe!!.flipped
+
+            // Reset Back Side
+            recipe!!.ingredientsSelect = true
+            setupTab()
         }
 
         private fun flipView(){
@@ -70,6 +94,18 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
 
             animation.playTogether(back, front)
             animation.start()
+        }
+
+        private fun setupTab(){
+            if(recipe!!.ingredientsSelect){
+                ingredientsBar.alpha = 1.0f
+                directionBar.alpha = 0.0f
+                recycler.adapter = RecipeIngredientsAdaptor(recipe!!.ingredients)
+            }else{
+                directionBar.alpha = 1.0f
+                ingredientsBar.alpha = 0.0f
+                recycler.adapter = RecipeDirectionAdaptor(recipe!!.instructions)
+            }
         }
     }
 }
