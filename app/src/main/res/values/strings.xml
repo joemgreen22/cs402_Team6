@@ -6,6 +6,7 @@
     <string name="recipe_title">Recipe Title</string>
     <string name="description">Description</string>
     <string name="direction_entry">Direction Here</string>
+    <string name="ingredient_entry">Ingredient Here</string>
     <string name="direction_count">0)</string>
 
     <!-- Image Names -->
@@ -19,6 +20,7 @@
     <string name="def_soup_img_1">def_soup_img_1</string>
     <string name="def_soup_img_2">def_soup_img_2</string>
     <string name="default_recipe_image_desc">Default Recipe Image. Add Image.</string>
+    <string name="bullet_point">Bullet Point</string>
 
     <!-- Shape Settings -->
     <string name="recipe_card_rounding">10dp</string>

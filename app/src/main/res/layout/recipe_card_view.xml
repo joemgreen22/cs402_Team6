@@ -16,6 +16,7 @@
         android:paddingVertical="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:alpha="0"
         >
 
         <LinearLayout
@@ -38,7 +39,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@drawable/recipe_card_background"
+                android:background="#00000000"
                 android:baselineAligned="false">
 
 
@@ -74,7 +75,7 @@
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    app:srcCompat="@drawable/Ingredients" />
+                                    app:srcCompat="@drawable/ingredients_icon" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -141,7 +142,7 @@
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    app:srcCompat="@drawable/Instructions" />
+                                    app:srcCompat="@drawable/instructions_icon" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -180,6 +181,7 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recipe_back_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".77"
@@ -198,7 +200,7 @@
         android:paddingVertical="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:alpha="0">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"

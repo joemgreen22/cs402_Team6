@@ -7,13 +7,17 @@
 
     <TextView
         android:id="@+id/count"
-        android:layout_width="40dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
-        android:text="@string/direction_count" />
+        android:fontFamily="@font/roboto"
+        android:text="@string/direction_count"
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/direction_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/direction_entry" />
+        android:fontFamily="@font/roboto"
+        android:text="@string/direction_entry"
+        android:textSize="10sp" />
 </LinearLayout>

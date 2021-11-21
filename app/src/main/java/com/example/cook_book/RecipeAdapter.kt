@@ -10,6 +10,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.animation.doOnEnd
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cook_book.recipe.RecipeDirectionAdaptor
 import com.example.cook_book.recipe.RecipeIngredientsAdaptor
@@ -41,7 +43,7 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
         private val frontImg = view.findViewById<ImageView>(R.id.front_recipe_image)
 
         // Back Components
-        private val recycler = view.findViewById<RecyclerView>(R.id.recipe_recycler_view)
+        private var recycler = view.findViewById<RecyclerView>(R.id.recipe_back_recycler)
         private val ingredientView = view.findViewById<LinearLayout>(R.id.ingredients)
         private val ingredientsBar = view.findViewById<ImageView>(R.id.ingredient_underline)
         private val directionView = view.findViewById<LinearLayout>(R.id.directions)
@@ -49,15 +51,23 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
 
         init{
             view.setOnClickListener(this)
+            ingredientView.visibility = View.GONE
+            directionView.visibility = View.GONE
+
+            recycler.layoutManager = LinearLayoutManager(context)
 
             ingredientView.setOnClickListener {
-                recipe!!.ingredientsSelect = !recipe!!.ingredientsSelect
-                setupTab()
+                if(!recipe!!.ingredientsSelect) {
+                    recipe!!.ingredientsSelect = !recipe!!.ingredientsSelect
+                    setupTab()
+                }
             }
 
             directionView.setOnClickListener {
-                recipe!!.ingredientsSelect = !recipe!!.ingredientsSelect
-                setupTab()
+                if(recipe!!.ingredientsSelect) {
+                    recipe!!.ingredientsSelect = !recipe!!.ingredientsSelect
+                    setupTab()
+                }
             }
         }
 
@@ -67,6 +77,16 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
                 frontDesc.text = it.recipeDescription
                 frontImg.setImageBitmap(it.image)
                 setupTab()
+
+                if(!it.flipped){
+                    ingredientView.visibility = View.GONE
+                    directionView.visibility = View.GONE
+                    backSide.alpha = 0.0F
+                    frontSide.alpha = 1.0F
+                }else{
+                    frontSide.alpha = 0.0F
+                    backSide.alpha = 1.0F
+                }
             }
         }
 
@@ -80,6 +100,11 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
         }
 
         private fun flipView(){
+            if(!recipe!!.flipped){
+                ingredientView.visibility = View.VISIBLE
+                directionView.visibility = View.VISIBLE
+            }
+
             var animation = AnimatorSet()
             var back = AnimatorInflater.loadAnimator(context, R.animator.card_flip_back_animtion)
             var front = AnimatorInflater.loadAnimator(context, R.animator.card_flip_front_animation)
@@ -94,6 +119,13 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
 
             animation.playTogether(back, front)
             animation.start()
+
+            animation.doOnEnd {
+                if(!recipe!!.flipped){
+                    ingredientView.visibility = View.GONE
+                    directionView.visibility = View.GONE
+                }
+            }
         }
 
         private fun setupTab(){
