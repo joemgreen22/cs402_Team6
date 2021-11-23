@@ -7,7 +7,7 @@
     <string name="description">Description</string>
     <string name="direction_entry">Direction Here</string>
     <string name="ingredient_entry">Ingredient Here</string>
-    <string name="direction_count">0)</string>
+    <string name="direction_count">0</string>
 
     <!-- Image Names -->
     <string name="default_recipe_image">def_recipe_image</string>
