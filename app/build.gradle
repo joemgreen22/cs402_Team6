@@ -32,7 +32,11 @@ android {
 }
 
 dependencies {
+    // https://github.com/wajahatkarim3/EasyFlipView
+    implementation 'com.wajahatkarim3.EasyFlipView:EasyFlipView:3.0.0'
 
+    
+    // Default Dependencies
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
