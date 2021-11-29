@@ -51,10 +51,10 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
 
         init{
             view.setOnClickListener(this)
+
             ingredientView.visibility = View.GONE
             directionView.visibility = View.GONE
-
-            recycler.layoutManager = LinearLayoutManager(context)
+            recycler.visibility = View.GONE
 
             ingredientView.setOnClickListener {
                 if(!recipe!!.ingredientsSelect) {
@@ -81,6 +81,7 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
                 if(!it.flipped){
                     ingredientView.visibility = View.GONE
                     directionView.visibility = View.GONE
+                    recycler.visibility = View.GONE
                     backSide.alpha = 0.0F
                     frontSide.alpha = 1.0F
                 }else{
@@ -103,6 +104,7 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
             if(!recipe!!.flipped){
                 ingredientView.visibility = View.VISIBLE
                 directionView.visibility = View.VISIBLE
+                recycler.visibility = View.VISIBLE
             }
 
             var animation = AnimatorSet()
@@ -124,19 +126,27 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
                 if(!recipe!!.flipped){
                     ingredientView.visibility = View.GONE
                     directionView.visibility = View.GONE
+                    recycler.visibility = View.GONE
                 }
             }
         }
 
         private fun setupTab(){
-            if(recipe!!.ingredientsSelect){
-                ingredientsBar.alpha = 1.0f
-                directionBar.alpha = 0.0f
-                recycler.adapter = RecipeIngredientsAdaptor(recipe!!.ingredients)
-            }else{
-                directionBar.alpha = 1.0f
-                ingredientsBar.alpha = 0.0f
-                recycler.adapter = RecipeDirectionAdaptor(recipe!!.instructions)
+            val linearLayoutManager = LinearLayoutManager(recycler.context, LinearLayoutManager.HORIZONTAL, false)
+            recycler.layoutManager = linearLayoutManager
+
+            recipe!!.let {
+                if(it.ingredientsSelect){
+                    ingredientsBar.alpha = 1.0f
+                    directionBar.alpha = 0.0f
+                    linearLayoutManager.initialPrefetchItemCount = it.ingredients.size
+                    recycler.adapter = RecipeIngredientsAdaptor(this,  it.ingredients)
+                }else{
+                    directionBar.alpha = 1.0f
+                    ingredientsBar.alpha = 0.0f
+                    linearLayoutManager.initialPrefetchItemCount = it.instructions.size
+                    recycler.adapter = RecipeDirectionAdaptor(this, it.instructions)
+                }
             }
         }
     }

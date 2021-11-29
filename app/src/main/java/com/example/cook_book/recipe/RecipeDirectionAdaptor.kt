@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cook_book.R
 
-class RecipeDirectionAdaptor(var directions: List<String>) : RecyclerView.Adapter<RecipeDirectionAdaptor.Line>() {
+class RecipeDirectionAdaptor(val onClickListener: View.OnClickListener, var directions: List<String>) : RecyclerView.Adapter<RecipeDirectionAdaptor.Line>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Line {
         val view = LayoutInflater.from(parent.getContext()).inflate(R.layout.direction_entry, parent, false)
@@ -16,7 +16,7 @@ class RecipeDirectionAdaptor(var directions: List<String>) : RecyclerView.Adapte
 
     override fun onBindViewHolder(line: Line, position: Int) {
         line.apply {
-            count.text = "${position + 1})"
+            count.text = "${position + 1}"
             direction.text = directions[position]
         }
     }
@@ -26,5 +26,9 @@ class RecipeDirectionAdaptor(var directions: List<String>) : RecyclerView.Adapte
     inner class Line(val view: View) : RecyclerView.ViewHolder(view) {
         val count = view.findViewById<TextView>(R.id.count)
         val direction = view.findViewById<TextView>(R.id.direction_text)
+
+        init {
+            view.setOnClickListener(onClickListener)
+        }
     }
 }
