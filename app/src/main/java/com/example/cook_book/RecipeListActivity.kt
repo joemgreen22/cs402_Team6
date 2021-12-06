@@ -1,18 +1,34 @@
 package com.example.cook_book
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.widget.Button
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cook_book.R
 import com.example.cook_book.Recipe
 import com.example.cook_book.RecipeAdapter
 import com.example.cook_book.RecipeModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.activity.result.ActivityResultCallback
+
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+
 
 class RecipeListActivity : AppCompatActivity() {
     private lateinit var kRecyclerView: RecyclerView
     private var recipeList = RecipeModel()
+    lateinit var  kadapter: RecipeAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -251,7 +267,61 @@ class RecipeListActivity : AppCompatActivity() {
         kRecyclerView = findViewById<RecyclerView>(R.id.recipe_recycler_view)
         kRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        val kadapter = RecipeAdapter(this, recipeList)
+        kadapter = RecipeAdapter(this, recipeList)
         kRecyclerView.adapter = kadapter
+
+
+        val intent = Intent(this, addRecipeActivity::class.java)
+        val addButton: FloatingActionButton = findViewById(R.id.addButton)
+
+        val activityResultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult())
+        { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val value = result.data
+                var newName = value?.getStringExtra("name")
+                var newDescription = value?.getStringExtra("description")
+
+//                val bmap = BitmapFactory.decodeByteArray(
+//                    getIntent().getByteArrayExtra("byteArray"),
+//                    0,
+//                    getIntent().getByteArrayExtra("byteArray")!!.size
+//                )
+
+
+                var newIngredients = value?.getStringArrayListExtra("ingredients")
+                var mutableIngredients = toMutable(newIngredients)
+
+                var newDirections = value?.getStringArrayListExtra("directions")
+                var mutableDirections = toMutable(newDirections)
+
+                recipeList.add(
+                    Recipe(newName.toString(),newDescription.toString(),  BitmapFactory.decodeResource(resources, R.drawable.def_soup_img_2),
+                        mutableIngredients,
+                        mutableDirections)
+                )
+                kadapter.notifyDataSetChanged()
+            }
+        }
+
+        addButton.setOnClickListener {
+            activityResultLauncher.launch(intent)
+        }
+
     }
+
+}
+
+private fun toMutable(array: ArrayList<String>?): MutableList<String> {
+    var tempMutable: MutableList<String> = mutableListOf()
+
+    val size = array?.size
+    if (size == null || array == null) {
+        tempMutable.add("None")
+        return tempMutable
+    }
+    for (i in 0 until size) {
+        tempMutable.add(array[i])
+    }
+    return tempMutable
 }

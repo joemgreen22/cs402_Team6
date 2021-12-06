@@ -23,6 +23,7 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
         return RecipeCard(null, view)
     }
 
+
     override fun getItemCount() = recipes.size
 
     override fun onBindViewHolder(card: RecipeCard, position: Int) {

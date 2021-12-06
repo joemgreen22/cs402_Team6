@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cook_Book.NoActionBar">
         <activity
+            android:name=".addRecipeActivity"
+            android:exported="false"
+            android:parentActivityName=".RecipeListActivity"/>
+
+        <activity
             android:name=".RecipeListActivity"
             android:exported="false" />
         <activity
