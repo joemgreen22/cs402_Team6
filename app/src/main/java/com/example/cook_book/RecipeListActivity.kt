@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -22,6 +24,10 @@ import androidx.activity.result.ActivityResultCallback
 
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import android.provider.MediaStore
+
+
+
 
 
 class RecipeListActivity : AppCompatActivity() {
@@ -282,12 +288,8 @@ class RecipeListActivity : AppCompatActivity() {
                 var newName = value?.getStringExtra("name")
                 var newDescription = value?.getStringExtra("description")
 
-//                val bmap = BitmapFactory.decodeByteArray(
-//                    getIntent().getByteArrayExtra("byteArray"),
-//                    0,
-//                    getIntent().getByteArrayExtra("byteArray")!!.size
-//                )
-
+                val imageUri: Uri = Uri.parse(value?.getStringExtra("imageURI"))
+                val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
 
                 var newIngredients = value?.getStringArrayListExtra("ingredients")
                 var mutableIngredients = toMutable(newIngredients)
@@ -296,7 +298,7 @@ class RecipeListActivity : AppCompatActivity() {
                 var mutableDirections = toMutable(newDirections)
 
                 recipeList.add(
-                    Recipe(newName.toString(),newDescription.toString(),  BitmapFactory.decodeResource(resources, R.drawable.def_soup_img_2),
+                    Recipe(newName.toString(),newDescription.toString(),  bitmap,
                         mutableIngredients,
                         mutableDirections)
                 )

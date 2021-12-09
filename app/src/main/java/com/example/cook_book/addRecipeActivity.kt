@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -23,6 +24,7 @@ class addRecipeActivity : AppCompatActivity() {
     private lateinit var descriptionLayout: TextInputLayout
     private lateinit var ingredientsLayout: TextInputLayout
     private lateinit var instructionsLayout: TextInputLayout
+    private lateinit var imageURI: Uri
     var ingredientsList = ArrayList<String>()
     var directionsList = ArrayList<String>()
 
@@ -73,7 +75,8 @@ class addRecipeActivity : AppCompatActivity() {
             intent.putExtra("name", nameToString(nameLayout))
             intent.putExtra("description", descriptionToString(descriptionLayout))
 
-
+            intent.putExtra("imageURI", imageURI.toString())
+//            var imageURI: Uri = imageView.geturi
 //            val drawable = imageView.drawable as BitmapDrawable
 //            var bmap: Bitmap = drawable.getBitmap();
 //            var bStream: ByteArrayOutputStream = ByteArrayOutputStream()
@@ -82,7 +85,7 @@ class addRecipeActivity : AppCompatActivity() {
 
             intent.putStringArrayListExtra("ingredients", ingredientsList as ArrayList<String?>?)
             intent.putStringArrayListExtra("directions", directionsList as ArrayList<String?>?)
-
+            var tmp1 = ingredientsList
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
@@ -93,11 +96,11 @@ class addRecipeActivity : AppCompatActivity() {
         val loadImage = registerForActivityResult(ActivityResultContracts.GetContent(),
             ActivityResultCallback {
                 imageView.setImageURI(it)
+                imageURI = it
             })
 
         imageButton.setOnClickListener() {
             loadImage.launch("image/*")
-
         }
     }
 
@@ -133,4 +136,32 @@ class addRecipeActivity : AppCompatActivity() {
     }
 
 
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        super.onSaveInstanceState(savedInstanceState)
+        savedInstanceState.putStringArrayList("ingredientsListArray", ingredientsList)
+        savedInstanceState.putStringArrayList("directionsListArray", directionsList)
+
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        var tempListOne = savedInstanceState.getStringArrayList("ingredientsListArray")
+        ingredientsList = removeNUll(tempListOne)
+
+        var tempListTwo = savedInstanceState.getStringArrayList("directionsListArray")
+        directionsList = removeNUll(tempListTwo)
+    }
+}
+
+private fun removeNUll(array: ArrayList<String>?): ArrayList<String> {
+    var templist = ArrayList<String>()
+
+    val size = array?.size
+    if (size == null || array == null) {
+        return templist
+    }
+    for (i in 0 until size) {
+        templist.add(array[i])
+    }
+    return templist
 }
