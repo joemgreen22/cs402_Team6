@@ -25,9 +25,13 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import android.provider.MediaStore
-
-
-
+import org.json.JSONObject
+import org.json.JSONArray
+import java.io.File
+import java.io.FileOutputStream
+import java.io.FileWriter
+import android.R.string
+import android.content.Context
 
 
 class RecipeListActivity : AppCompatActivity() {
@@ -311,6 +315,44 @@ class RecipeListActivity : AppCompatActivity() {
         }
 
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        var jsonObject = JSONObject()
+        var file = File("recipeData.json")
+        val fos = openFileOutput("recipeData.txt", Context.MODE_PRIVATE)
+
+        var output = ""
+        for(recipe in recipeList){
+            jsonObject = JSONObject()
+            jsonObject.put("Name", recipe.recipeName);
+            jsonObject.put("Description", recipe.recipeDescription);
+            jsonObject.put("ImagePath", "bruh");
+
+            var array = JSONArray()
+            for(ingredient in recipe.ingredients){
+                array.put(ingredient)
+            }
+            jsonObject.put("ingredients", array)
+
+            array = JSONArray()
+            for(instruction in recipe.instructions){
+                array.put(instruction)
+            }
+
+            jsonObject.put("instructions", array)
+
+            output += jsonObject.toString()
+
+
+        }
+        fos.write(output.toByteArray())
+        fos.close()
+
+
+    }
+
 
 }
 
