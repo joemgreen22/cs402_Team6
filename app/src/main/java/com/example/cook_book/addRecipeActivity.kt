@@ -71,7 +71,7 @@ class addRecipeActivity : AppCompatActivity() {
 
         val submitButton: Button = findViewById(R.id.submitAll)
         submitButton.setOnClickListener {
-            var intent =Intent()
+            var intent = Intent()
             intent.putExtra("name", nameToString(nameLayout))
             intent.putExtra("description", descriptionToString(descriptionLayout))
 

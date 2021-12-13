@@ -18,6 +18,9 @@ import org.json.JSONArray
 import java.io.File
 import android.content.Context
 import android.graphics.Bitmap
+import android.widget.ImageView
+import androidx.core.net.toUri
+import java.io.InputStream
 
 
 class RecipeListActivity : AppCompatActivity() {
@@ -61,11 +64,19 @@ class RecipeListActivity : AppCompatActivity() {
                         directions.add(instructionsArray.getString(i))
                     }
 
+                    var bitmap : Bitmap
+                    if(!jObject.getString("ImageName").contains("/")){
+                        bitmap = BitmapFactory.decodeResource(resources, jObject.getString("ImageName").toInt())
+                    } else {
+                        val imageUri: Uri = Uri.parse(jObject.getString("ImageName"))
+                        bitmap = BitmapFactory.decodeResource(resources, R.drawable.def_chicken_img_1)
+                    }
+
                     recipeList.add(
                         Recipe(jObject.getString("Name"),
                             jObject.getString("Description"),
-                            jObject.getInt("ImageName"),
-                            BitmapFactory.decodeResource(resources, jObject.getInt("ImageName")),
+                            jObject.getString("ImageName"),
+                            bitmap,
                             ingredients,
                             directions
                         )
@@ -84,7 +95,7 @@ class RecipeListActivity : AppCompatActivity() {
                 recipeList.add(
                     Recipe("Chicken Drumsticks",
                         "After a quick marinade, these drumsticks bake in the oven in no time and stay extremely tender and juicy. The high heat helps the skin get nice and crispy for a perfectly baked drumstick that only take about 20 minutes to bake!",
-                        R.drawable.def_chicken_img_1,
+                        R.drawable.def_chicken_img_1.toString(),
                         BitmapFactory.decodeResource(resources, R.drawable.def_chicken_img_1),
                         ingredients,
                         directions)
@@ -123,7 +134,7 @@ class RecipeListActivity : AppCompatActivity() {
                 recipeList.add(
                     Recipe("Roasted Capers & Buttered Chicken",
                         "This Italian-American classic dish gets a nutty addition of browned butter and a briny crunch from crispy capers. It's sure to be a hit.",
-                        R.drawable.def_chicken_img_2,
+                        R.drawable.def_chicken_img_2.toString(),
                         BitmapFactory.decodeResource(resources, R.drawable.def_chicken_img_2),
                         ingredients,
                         directions)
@@ -152,7 +163,7 @@ class RecipeListActivity : AppCompatActivity() {
                 recipeList.add(
                     Recipe("Oreo Cheesecake",
                         "The best Oreo Cheesecake you've ever tasted. French vanilla Ice Cream topped with crushed original ores.",
-                        R.drawable.def_dessert_img_1,
+                        R.drawable.def_dessert_img_1.toString(),
                         BitmapFactory.decodeResource(resources, R.drawable.def_dessert_img_1),
                         ingredients,
                         directions)
@@ -182,7 +193,7 @@ class RecipeListActivity : AppCompatActivity() {
                 recipeList.add(
                     Recipe("Tiramisu",
                         "A creamy dessert of espresso-soaked ladyfingers surrounded by lightly sweetened whipped cream and a rich mascarpone, tiramisù relies heavily on the quality of its ingredients. If you don’t have a barista setup at home, pick up the espresso at a local coffee shop, or use strongly brewed coffee.",
-                        R.drawable.def_dessert_img_2,
+                        R.drawable.def_dessert_img_2.toString(),
                         BitmapFactory.decodeResource(resources, R.drawable.def_dessert_img_2),
                         ingredients,
                         directions)
@@ -208,7 +219,7 @@ class RecipeListActivity : AppCompatActivity() {
                 recipeList.add(
                     Recipe("Fruit Salad With Honey Dressing",
                         "The BEST Fruit Salad with a sweet and bright honey lime dressing! It’s an incredibly refreshing, must have side dish that’s made with beautiful blend of delicious fruits and a simple dressing to compliment it. This is always sure to be a crowd favorite!",
-                        R.drawable.def_salad_img_1,
+                        R.drawable.def_salad_img_1.toString(),
                         BitmapFactory.decodeResource(resources, R.drawable.def_salad_img_1),
                         ingredients,
                         directions)
@@ -233,7 +244,7 @@ class RecipeListActivity : AppCompatActivity() {
                 recipeList.add(
                     Recipe("Caesar Salad",
                         "Classic Caesar Salad with crisp homemade croutons and a light caesar dressing – for when you want to impress your dinner guests.",
-                        R.drawable.def_salad_img_2,
+                        R.drawable.def_salad_img_2.toString(),
                         BitmapFactory.decodeResource(resources, R.drawable.def_salad_img_2),
                         ingredients,
                         directions)
@@ -270,7 +281,7 @@ class RecipeListActivity : AppCompatActivity() {
                 recipeList.add(
                     Recipe("Ratatouille",
                         "Ratatouille is a classic end-of-summer French stew that’s fun to say (rat-tuh-TOO-ee) and fun to make. It’s packed with fresh produce: tomatoes, eggplant, zucchini and yellow squash, and bell pepper.",
-                        R.drawable.def_soup_img_1,
+                        R.drawable.def_soup_img_1.toString(),
                         BitmapFactory.decodeResource(resources, R.drawable.def_soup_img_1),
                         ingredients,
                         directions)
@@ -301,7 +312,7 @@ class RecipeListActivity : AppCompatActivity() {
                 recipeList.add(
                     Recipe("Shakshuka",
                         "Shakshuka is an easy, healthy breakfast (or any time of day) recipe in Israel and other parts of the Middle East and North Africa. It’s a simple combination of simmering tomatoes, onions, garlic, spices and gently poached eggs. It’s nourishing, filling and one recipe I guarantee you’ll make time and again.",
-                        R.drawable.def_soup_img_2,
+                        R.drawable.def_soup_img_2.toString(),
                         BitmapFactory.decodeResource(resources, R.drawable.def_soup_img_2),
                         ingredients,
                         directions)
@@ -325,10 +336,10 @@ class RecipeListActivity : AppCompatActivity() {
                 val value = result.data
                 var newName = value?.getStringExtra("name")
                 var newDescription = value?.getStringExtra("description")
-                var imageName = value?.getIntExtra("imageName", 0)
 
                 val imageUri: Uri = Uri.parse(value?.getStringExtra("imageURI"))
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+
 
                 var newIngredients = value?.getStringArrayListExtra("ingredients")
                 var mutableIngredients = toMutable(newIngredients)
@@ -339,7 +350,7 @@ class RecipeListActivity : AppCompatActivity() {
                 recipeList.add(
                     Recipe(newName.toString(),
                         newDescription.toString(),
-                        imageName,
+                        imageUri.encodedPath.toString(),
                         bitmap,
                         mutableIngredients,
                         mutableDirections)
