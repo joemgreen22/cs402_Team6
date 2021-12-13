@@ -1,5 +1,6 @@
 package com.example.cook_book
 
+import android.R.attr
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -21,12 +22,17 @@ import android.graphics.Bitmap
 import android.widget.ImageView
 import androidx.core.net.toUri
 import java.io.InputStream
+import android.R.attr.data
+
+
+
 
 
 class RecipeListActivity : AppCompatActivity() {
     private lateinit var kRecyclerView: RecyclerView
     private var recipeList = RecipeModel()
     lateinit var  kadapter: RecipeAdapter
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,8 +74,8 @@ class RecipeListActivity : AppCompatActivity() {
                     if(!jObject.getString("ImageName").contains("/")){
                         bitmap = BitmapFactory.decodeResource(resources, jObject.getString("ImageName").toInt())
                     } else {
-                        val imageUri: Uri = Uri.parse(jObject.getString("ImageName"))
-                        bitmap = BitmapFactory.decodeResource(resources, R.drawable.def_chicken_img_1)
+                        val filPath = jObject.getString("ImageName")
+                        bitmap = BitmapFactory.decodeFile(filPath.toString())
                     }
 
                     recipeList.add(
@@ -339,7 +345,9 @@ class RecipeListActivity : AppCompatActivity() {
 
                 val imageUri: Uri = Uri.parse(value?.getStringExtra("imageURI"))
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
-
+                var path : String = imageUri.hashCode().toString()
+                File("/data/data/com.example.cook_book/files/", "$path.png").writeBitmap(bitmap, Bitmap.CompressFormat.PNG, 100)
+                path = "/data/data/com.example.cook_book/files/$path.png"
 
                 var newIngredients = value?.getStringArrayListExtra("ingredients")
                 var mutableIngredients = toMutable(newIngredients)
@@ -350,7 +358,7 @@ class RecipeListActivity : AppCompatActivity() {
                 recipeList.add(
                     Recipe(newName.toString(),
                         newDescription.toString(),
-                        imageUri.encodedPath.toString(),
+                        path,
                         bitmap,
                         mutableIngredients,
                         mutableDirections)
@@ -411,3 +419,13 @@ private fun toMutable(array: ArrayList<String>?): MutableList<String> {
     }
     return tempMutable
 }
+
+// https://stackoverflow.com/questions/11274715/save-bitmap-to-file-function
+private fun File.writeBitmap(bitmap: Bitmap, format: Bitmap.CompressFormat, quality: Int) {
+    outputStream().use { out ->
+        bitmap.compress(format, quality, out)
+        out.flush()
+    }
+}
+
+
