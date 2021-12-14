@@ -3,6 +3,7 @@ package com.example.cook_book
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.doOnEnd
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cook_book.recipe.EditAndViewRecipeActivity
 import com.example.cook_book.recipe.RecipeDirectionAdaptor
 import com.example.cook_book.recipe.RecipeIngredientsAdaptor
 
@@ -34,7 +37,7 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
         }
     }
 
-    inner class RecipeCard(var recipe: Recipe?, val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class RecipeCard(var recipe: Recipe?, val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
         private val frontSide = view.findViewById<ConstraintLayout>(R.id.front_side)
         private val backSide = view.findViewById<ConstraintLayout>(R.id.back_side)
 
@@ -52,6 +55,7 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
 
         init{
             view.setOnClickListener(this)
+            view.setOnLongClickListener(this)
 
             ingredientView.visibility = View.GONE
             directionView.visibility = View.GONE
@@ -100,6 +104,15 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
             recipe!!.ingredientsSelect = true
             setupTab()
         }
+
+        override fun onLongClick(p0: View?): Boolean {
+
+            val intent = Intent(context, EditAndViewRecipeActivity::class.java)
+            startActivity(context, intent, null)
+
+            return true
+        }
+
 
         private fun flipView(){
             if(!recipe!!.flipped){
