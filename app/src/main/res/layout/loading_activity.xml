@@ -42,7 +42,7 @@
         android:layout_marginTop="12dp"
         android:text="Loading Complete"
         android:textColor="#FF5722"
-        android:textSize="40dp"
+        android:textSize="38dp"
         android:textStyle="bold"
         android:visibility="invisible" />
 
