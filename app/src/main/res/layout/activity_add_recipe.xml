@@ -114,9 +114,10 @@ android:scrollbars="vertical">
                 android:textSize="14dp"
                 android:layout_below="@+id/ingredientSubmit"
                 android:layout_marginTop="4dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginBottom="18dp"
-                android:freezesText="true"/>
+                android:freezesText="true"
+                android:background="@color/grey"
+                android:padding="8dp"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/instructionsInput"
@@ -126,6 +127,7 @@ android:scrollbars="vertical">
                 android:hint="What is the next Step"
                 app:endIconMode="clear_text"
                 android:layout_below="@id/listIngredient"
+
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -154,9 +156,10 @@ android:scrollbars="vertical">
                 android:textSize="14dp"
                 android:layout_below="@+id/instructionsSubmit"
                 android:layout_marginTop="4dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginBottom="18dp"
-                android:freezesText="true"/>
+                android:freezesText="true"
+                android:background="@color/grey"
+                android:padding="8dp"/>
 
 
             <Button
