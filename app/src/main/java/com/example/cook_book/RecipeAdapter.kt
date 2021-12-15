@@ -18,6 +18,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cook_book.recipe.EditAndViewRecipeActivity
 import com.example.cook_book.recipe.RecipeDirectionAdaptor
 import com.example.cook_book.recipe.RecipeIngredientsAdaptor
+import android.provider.MediaStore
+
+import android.graphics.Bitmap
+import android.net.Uri
+import java.io.ByteArrayOutputStream
+
 
 class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerView.Adapter<RecipeAdapter.RecipeCard>() {
 
@@ -107,7 +113,16 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
 
         override fun onLongClick(p0: View?): Boolean {
 
-            val intent = Intent(context, EditAndViewRecipeActivity::class.java)
+            val intent = Intent(context, EditAndViewRecipeActivity()::class.java)
+            intent.putExtra("name", recipe?.recipeName)
+            intent.putExtra("description", recipe?.recipeDescription)
+            intent.putStringArrayListExtra("ingredients", toArrayList(recipe?.ingredients))
+            intent.putStringArrayListExtra("instructions", toArrayList(recipe?.instructions))
+            var imageURI = getImageUri(context, recipe?.image)
+            intent.putExtra("imageURI", imageURI.toString() )
+
+
+
             startActivity(context, intent, null)
 
             return true
@@ -164,4 +179,30 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
             }
         }
     }
+
+    private fun toArrayList(mutable: MutableList<String>?): ArrayList<String> {
+        var templist: ArrayList<String> = arrayListOf()
+
+        val size = mutable?.size
+        if (size == null || mutable == null) {
+            templist.add("None")
+            return templist
+        }
+        for (i in 0 until size) {
+            templist.add(mutable[i])
+        }
+        return templist
+    }
+
+    fun getImageUri(inContext: Context, inImage: Bitmap?): Uri? {
+        val bytes = ByteArrayOutputStream()
+        if (inImage != null) {
+            inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        }
+        val path =
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
+
+
 }
