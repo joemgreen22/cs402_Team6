@@ -1,16 +1,17 @@
-package com.example.cook_book.recipe
+package com.example.cook_book
 
-import android.graphics.Bitmap
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cook_book.R
-import com.example.cook_book.RecipeAdapter
+import com.example.cook_book.recipe.viewDirectionAdaptor
+import com.example.cook_book.recipe.viewIngredientAdaptor
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class EditAndViewRecipeActivity() : AppCompatActivity() {
@@ -33,6 +34,18 @@ class EditAndViewRecipeActivity() : AppCompatActivity() {
 
         val backButton: FloatingActionButton = findViewById(R.id.backButton)
         backButton.setOnClickListener {
+            var intent = Intent()
+            intent.putExtra("deleted", false)
+            setResult(2, intent)
+            finish()
+        }
+
+        val deleteButton :FloatingActionButton = findViewById(R.id.deleteButton)
+        deleteButton.setOnClickListener {
+            var intent = Intent()
+            intent.putExtra("name", name)
+            intent.putExtra("deleted", true)
+            setResult(2, intent)
             finish()
         }
 //        val editButton: FloatingActionButton = findViewById(R.id.editButton)

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cook_Book.NoActionBar">
         <activity
-            android:name=".recipe.EditAndViewRecipeActivity"
+            android:name=".EditAndViewRecipeActivity"
             android:exported="false" />
         <activity
             android:name=".addRecipeActivity"

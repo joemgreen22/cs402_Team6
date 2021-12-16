@@ -23,9 +23,8 @@ import android.widget.ImageView
 import androidx.core.net.toUri
 import java.io.InputStream
 import android.R.attr.data
-
-
-
+import android.R.attr.killAfterRestore
+import android.view.View
 
 
 class RecipeListActivity : AppCompatActivity() {
@@ -365,7 +364,10 @@ class RecipeListActivity : AppCompatActivity() {
                 )
                 kadapter.notifyDataSetChanged()
             }
+
+
         }
+
 
         addButton.setOnClickListener {
             activityResultLauncher.launch(intent)
@@ -405,6 +407,12 @@ class RecipeListActivity : AppCompatActivity() {
         }
         fos.write(jsonArray.toString().toByteArray())
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        kadapter.onActivityResult(requestCode, resultCode, data)
+        kadapter.notifyDataSetChanged()
+    }
 }
 
 private fun toMutable(array: ArrayList<String>?): MutableList<String> {
@@ -427,6 +435,10 @@ private fun File.writeBitmap(bitmap: Bitmap, format: Bitmap.CompressFormat, qual
         bitmap.compress(format, quality, out)
         out.flush()
     }
+
+
 }
+
+
 
 

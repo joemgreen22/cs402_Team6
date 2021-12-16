@@ -15,7 +15,6 @@ import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cook_book.recipe.EditAndViewRecipeActivity
 import com.example.cook_book.recipe.RecipeDirectionAdaptor
 import com.example.cook_book.recipe.RecipeIngredientsAdaptor
 import android.provider.MediaStore
@@ -23,11 +22,17 @@ import android.provider.MediaStore
 import android.graphics.Bitmap
 import android.net.Uri
 import java.io.ByteArrayOutputStream
+import android.app.Activity
+import android.util.Log
+import android.view.ContextMenu
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 
 
 class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerView.Adapter<RecipeAdapter.RecipeCard>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RecipeCard {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RecipeCard{
         val view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_card_view, parent, false)
         return RecipeCard(null, view)
     }
@@ -112,21 +117,22 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
         }
 
         override fun onLongClick(p0: View?): Boolean {
+            val intent = Intent(context, EditAndViewRecipeActivity::class.java)
 
-            val intent = Intent(context, EditAndViewRecipeActivity()::class.java)
+
             intent.putExtra("name", recipe?.recipeName)
             intent.putExtra("description", recipe?.recipeDescription)
             intent.putStringArrayListExtra("ingredients", toArrayList(recipe?.ingredients))
             intent.putStringArrayListExtra("instructions", toArrayList(recipe?.instructions))
             var imageURI = getImageUri(context, recipe?.image)
-            intent.putExtra("imageURI", imageURI.toString() )
+            intent.putExtra("imageURI", imageURI.toString())
 
+            (context as Activity).startActivityForResult(intent, 2)
 
-
-            startActivity(context, intent, null)
 
             return true
         }
+
 
 
         private fun flipView(){
@@ -204,5 +210,24 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
         return Uri.parse(path)
     }
 
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == resultCode) {
+            if (data != null) {
+                if (data.getBooleanExtra("deleted", false)) {
+                    print("YES!")
+                    val name = data.getStringExtra("name")
+                    for(i in 0 until recipes.size){
+                        if (recipes[i].recipeName.equals(name)){
+                            recipes.removeAt(i)
+                            break
+                        }
+                    }
+                } else {
+                    print("no")
+                }
+
+            }
+        }
+    }
 
 }
