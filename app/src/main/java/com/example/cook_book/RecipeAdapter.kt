@@ -3,6 +3,7 @@ package com.example.cook_book
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +12,27 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.doOnEnd
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cook_book.recipe.RecipeDirectionAdaptor
 import com.example.cook_book.recipe.RecipeIngredientsAdaptor
+import android.provider.MediaStore
+
+import android.graphics.Bitmap
+import android.net.Uri
+import java.io.ByteArrayOutputStream
+import android.app.Activity
+import android.util.Log
+import android.view.ContextMenu
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+
 
 class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerView.Adapter<RecipeAdapter.RecipeCard>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RecipeCard {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RecipeCard{
         val view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_card_view, parent, false)
         return RecipeCard(null, view)
     }
@@ -34,7 +48,7 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
         }
     }
 
-    inner class RecipeCard(var recipe: Recipe?, val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class RecipeCard(var recipe: Recipe?, val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
         private val frontSide = view.findViewById<ConstraintLayout>(R.id.front_side)
         private val backSide = view.findViewById<ConstraintLayout>(R.id.back_side)
 
@@ -52,6 +66,7 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
 
         init{
             view.setOnClickListener(this)
+            view.setOnLongClickListener(this)
 
             ingredientView.visibility = View.GONE
             directionView.visibility = View.GONE
@@ -100,6 +115,25 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
             recipe!!.ingredientsSelect = true
             setupTab()
         }
+
+        override fun onLongClick(p0: View?): Boolean {
+            val intent = Intent(context, EditAndViewRecipeActivity::class.java)
+
+
+            intent.putExtra("name", recipe?.recipeName)
+            intent.putExtra("description", recipe?.recipeDescription)
+            intent.putStringArrayListExtra("ingredients", toArrayList(recipe?.ingredients))
+            intent.putStringArrayListExtra("instructions", toArrayList(recipe?.instructions))
+            var imageURI = getImageUri(context, recipe?.image)
+            intent.putExtra("imageURI", imageURI.toString())
+
+            (context as Activity).startActivityForResult(intent, 2)
+
+
+            return true
+        }
+
+
 
         private fun flipView(){
             if(!recipe!!.flipped){
@@ -151,4 +185,49 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
             }
         }
     }
+
+    private fun toArrayList(mutable: MutableList<String>?): ArrayList<String> {
+        var templist: ArrayList<String> = arrayListOf()
+
+        val size = mutable?.size
+        if (size == null || mutable == null) {
+            templist.add("None")
+            return templist
+        }
+        for (i in 0 until size) {
+            templist.add(mutable[i])
+        }
+        return templist
+    }
+
+    fun getImageUri(inContext: Context, inImage: Bitmap?): Uri? {
+        val bytes = ByteArrayOutputStream()
+        if (inImage != null) {
+            inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        }
+        val path =
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
+
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == resultCode) {
+            if (data != null) {
+                if (data.getBooleanExtra("deleted", false)) {
+                    print("YES!")
+                    val name = data.getStringExtra("name")
+                    for(i in 0 until recipes.size){
+                        if (recipes[i].recipeName.equals(name)){
+                            recipes.removeAt(i)
+                            break
+                        }
+                    }
+                } else {
+                    print("no")
+                }
+
+            }
+        }
+    }
+
 }
