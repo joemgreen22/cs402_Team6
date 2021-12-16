@@ -43,10 +43,10 @@
         android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/deleteButton"
         android:fontFamily="@font/roboto_bold"
-        android:text="View and Edit a Recipie"
+        android:text="View a Recipe"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="28sp" />
+        android:textSize="20sp" />
 
     <ScrollView
         android:layout_width="match_parent"
