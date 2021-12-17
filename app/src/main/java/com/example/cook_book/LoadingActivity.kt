@@ -48,7 +48,7 @@ class LoadingActivity : AppCompatActivity() {
                 Thread.sleep(50)
 
 
-                if (jArray != null && jArray.length() > 0 && loadingDone) {
+                if (jArray != null && jArray.length() > 0 && !loadingDone) {
 
                     if(totalLoadedItems < jArray.length()){
                         if(totalLoadedItems + 25 > jArray.length()){
@@ -316,12 +316,13 @@ class LoadingActivity : AppCompatActivity() {
                 myHandler.post {
                     if(progressBarPercentage < 75){
                         myProgressBar.progress = progressBarPercentage + 1
+                        progressBarPercentage++;
                     } else if(progressBarPercentage >= 75 && loadingDone){
                         myProgressBar.progress = progressBarPercentage + 1
+                        progressBarPercentage++;
                     }
 
                 }
-                progressBarPercentage++;
             }
             myHandler.post {
                 completedText.visibility = View.VISIBLE
