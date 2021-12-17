@@ -73,13 +73,6 @@ class LoadingActivity : AppCompatActivity() {
                             directions.add(instructionsArray.getString(i))
                         }
 
-                        var bitmap : Bitmap? = null
-//                        if(!jObject.getString("ImageName").contains("/")){
-                            bitmap = BitmapFactory.decodeResource(resources, jObject.getString("ImageName").toInt())
-//                        } else {
-//                            val filPath = jObject.getString("ImageName")
-//                            bitmap = BitmapFactory.decodeFile(filPath.toString())
-//                        }
 
                         recipeList.add(
                             Recipe(jObject.getString("Name"),
@@ -321,7 +314,12 @@ class LoadingActivity : AppCompatActivity() {
                     loadingDone = true
                 }
                 myHandler.post {
-                    myProgressBar.progress = progressBarPercentage + 1
+                    if(progressBarPercentage < 75){
+                        myProgressBar.progress = progressBarPercentage + 1
+                    } else if(progressBarPercentage >= 75 && loadingDone){
+                        myProgressBar.progress = progressBarPercentage + 1
+                    }
+
                 }
                 progressBarPercentage++;
             }

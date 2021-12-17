@@ -30,9 +30,6 @@ class RecipeListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_list)
 
-        var ingredients = ArrayList<String>()
-        var directions = ArrayList<String>()
-
 
         recipeList.addAll(intent.getBundleExtra("myRecipeList")?.getSerializable("recipeList") as ArrayList<Recipe>)
 
@@ -79,7 +76,6 @@ class RecipeListActivity : AppCompatActivity() {
 
 
         }
-
 
         addButton.setOnClickListener {
             activityResultLauncher.launch(intent)
