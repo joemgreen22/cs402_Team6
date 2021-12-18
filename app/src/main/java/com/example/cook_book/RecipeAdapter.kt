@@ -29,6 +29,7 @@ import android.view.ContextMenu
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import java.io.File
 
 
 class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerView.Adapter<RecipeAdapter.RecipeCard>() {
@@ -220,6 +221,10 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
                     val name = data.getStringExtra("name")
                     for(i in 0 until recipes.size){
                         if (recipes[i].recipeName.equals(name)){
+                            if(File(recipes[i].imageName).exists()) {
+                                val file = File(recipes[i].imageName)
+                                file.delete()
+                            }
                             recipes.removeAt(i)
                             break
                         }

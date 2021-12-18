@@ -3,6 +3,7 @@ package com.example.cook_book
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -43,7 +45,8 @@ class addRecipeActivity : AppCompatActivity() {
         var ingredientsInputText: TextInputEditText = findViewById(R.id.ingredientsInputText)
         var instructionsInputText: TextInputEditText = findViewById(R.id.instructionsInputText)
         var imageView: ImageView = findViewById(R.id.imageView)
-
+        imageURI = R.drawable.default_recipe_image.toString().toUri()
+        imageView.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.default_recipe_image))
 
 
         val backButton: FloatingActionButton = findViewById(R.id.backButton)
@@ -97,6 +100,7 @@ class addRecipeActivity : AppCompatActivity() {
             ActivityResultCallback {
                 imageView.setImageURI(it)
                 imageURI = it
+
             })
 
         imageButton.setOnClickListener() {

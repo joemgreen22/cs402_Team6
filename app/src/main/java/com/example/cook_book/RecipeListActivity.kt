@@ -53,10 +53,16 @@ class RecipeListActivity : AppCompatActivity() {
                 var newDescription = value?.getStringExtra("description")
 
                 val imageUri: Uri = Uri.parse(value?.getStringExtra("imageURI"))
-                val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
-                var path : String = imageUri.hashCode().toString()
-                File("/data/data/com.example.cook_book/files/", "$path.png").writeBitmap(bitmap, Bitmap.CompressFormat.PNG, 100)
-                path = "/data/data/com.example.cook_book/files/$path.png"
+
+                val bitmap : Bitmap
+                var path : String = imageUri.toString()
+                if(imageUri.toString().contains("/")){
+                    bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+                    path = imageUri.hashCode().toString()
+                    File("/data/data/com.example.cook_book/files/", "$path.png").writeBitmap(bitmap, Bitmap.CompressFormat.PNG, 100)
+                    path = "/data/data/com.example.cook_book/files/$path.png"
+                }
+
 
                 var newIngredients = value?.getStringArrayListExtra("ingredients")
                 var mutableIngredients = toMutable(newIngredients)
