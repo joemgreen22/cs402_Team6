@@ -221,10 +221,7 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
                     val name = data.getStringExtra("name")
                     for(i in 0 until recipes.size){
                         if (recipes[i].recipeName.equals(name)){
-                            if(File(recipes[i].imageName).exists()) {
-                                val file = File(recipes[i].imageName)
-                                file.delete()
-                            }
+
                             recipes.removeAt(i)
                             break
                         }
