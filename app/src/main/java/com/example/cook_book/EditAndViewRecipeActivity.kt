@@ -37,6 +37,7 @@ class EditAndViewRecipeActivity() : AppCompatActivity() {
             var intent = Intent()
             intent.putExtra("deleted", false)
             setResult(2, intent)
+
             finish()
         }
 

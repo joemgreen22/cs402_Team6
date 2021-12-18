@@ -23,11 +23,13 @@ import android.graphics.Bitmap
 import android.net.Uri
 import java.io.ByteArrayOutputStream
 import android.app.Activity
+import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.ContextMenu
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import java.io.File
 
 
 class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerView.Adapter<RecipeAdapter.RecipeCard>() {
@@ -35,6 +37,7 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RecipeCard{
         val view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_card_view, parent, false)
         return RecipeCard(null, view)
+
     }
 
 
@@ -91,7 +94,7 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
             recipe?.let {
                 frontTxt.text = it.recipeName
                 frontDesc.text = it.recipeDescription
-                frontImg.setImageBitmap(it.image)
+                frontImg.setImageBitmap(makeBitMap(it.imageName))
                 setupTab()
 
                 if(!it.flipped){
@@ -119,12 +122,12 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
         override fun onLongClick(p0: View?): Boolean {
             val intent = Intent(context, EditAndViewRecipeActivity::class.java)
 
-
             intent.putExtra("name", recipe?.recipeName)
             intent.putExtra("description", recipe?.recipeDescription)
             intent.putStringArrayListExtra("ingredients", toArrayList(recipe?.ingredients))
             intent.putStringArrayListExtra("instructions", toArrayList(recipe?.instructions))
-            var imageURI = getImageUri(context, recipe?.image)
+
+            var imageURI = getImageUri(context, recipe?.imageName?.let { makeBitMap(it) })
             intent.putExtra("imageURI", imageURI.toString())
 
             (context as Activity).startActivityForResult(intent, 2)
@@ -218,6 +221,7 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
                     val name = data.getStringExtra("name")
                     for(i in 0 until recipes.size){
                         if (recipes[i].recipeName.equals(name)){
+
                             recipes.removeAt(i)
                             break
                         }
@@ -228,6 +232,16 @@ class RecipeAdapter (val context: Context, var recipes: RecipeModel) : RecyclerV
 
             }
         }
+    }
+
+    private fun makeBitMap(ImageName : String): Bitmap {
+        var  bitmap : Bitmap
+        if(!ImageName.contains("/")){
+            bitmap = BitmapFactory.decodeResource(context.resources, ImageName.toInt())
+        } else {
+            bitmap = BitmapFactory.decodeFile(ImageName)
+        }
+        return bitmap
     }
 
 }
